@@ -16,7 +16,7 @@ class Tweet < SuperModel::Base
 
     private
       def timeline
-        twitter.friends_timeline.collect {|t|
+        twitter.user_timeline("jgwmaxwell").collect {|t|
           t.profile_image_url = t.user.profile_image_url
           t.delete('user')
           t.to_hash
@@ -24,11 +24,7 @@ class Tweet < SuperModel::Base
       end
 
       def twitter
-        httpauth = Twitter::HTTPAuth.new(
-          AppConfig.username, 
-          AppConfig.password
-        )
-        Twitter::Base.new(httpauth)
+        Twitter::Client.new
       end
   end
 end
